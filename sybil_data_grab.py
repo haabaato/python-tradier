@@ -7,6 +7,7 @@ import sybil_data_ui_helper
 import requests
 import time
 from datetime import datetime
+import pprint
 
 # Verify that the ticker is valid and grab/print some daily trade info for the underlying.
 def background_info(ticker, api_key):
@@ -100,18 +101,26 @@ def get_start_date(history_limit):
 # Get a timeseries of all the trade data.
 def get_trade_data(option_symbol, start_date, binning, should_use_history_endpoint, api_key):
     if(should_use_history_endpoint):
+        print('(Using history endpoint...)')
         trade_data_response = requests.get('https://sandbox.tradier.com/v1/markets/history?',
             params={'symbol': option_symbol, 'start': start_date},
             headers={'Authorization': api_key, 'Accept': 'application/json'}
         )
         trade_data_json = trade_data_response.json()
+        if (trade_data_json is None or trade_data_json['history'] is None):
+            print('No trade data was returned from API. Returning.')
+            return
         return(trade_data_json['history']['day'])
     else:
+        print('(Not using history endpoint...)')
         trade_data_response = requests.get('https://sandbox.tradier.com/v1/markets/timesales?',
             params={'symbol': option_symbol, 'start': start_date, 'interval':(str(int(binning))+"min")},
             headers={'Authorization': api_key, 'Accept': 'application/json'}
         )
         trade_data_json = trade_data_response.json()
+        if (trade_data_json is None or trade_data_json['series'] is None):
+            print('No trade data was returned from API. Returning.')
+            return
         return (trade_data_json['series']['data'])
 
 
