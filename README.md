@@ -1,3 +1,5 @@
+(haabaato: modified the code to allow input of an entire option symbol from the first prompt, e.g. "SPY 4/17 200.0 C".  Saves time not having to go through several input prompts.)
+
 # MySybil Historic Options Data Plotter
 
 This set of scripts aims to provide anyone who wants it free access to historic options trade data. Whether you use this simply to view option prices over time, or as a starting point to build from, my main hope is that it saves you time and provides you with a level of independence from your broker and any major websites that aim to make money off of you.
